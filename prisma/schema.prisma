@@ -15,4 +15,48 @@ model app_user {
   clerkid String    @unique @db.VarChar(40)
   name    String    @db.VarChar(40)
   email   String    @unique @db.VarChar(255)
+  todo    todo[]
+}
+
+model tag {
+  id               String             @id @db.Uuid
+  created          DateTime?          @default(now()) @db.Timestamptz(6)
+  updated          DateTime?          @default(now()) @db.Timestamptz(6)
+  deleted          DateTime?          @db.Timestamptz(6)
+  name             String?            @db.VarChar(40)
+  todo_history_tag todo_history_tag[]
+}
+
+model todo {
+  id          String        @id @db.Uuid
+  created     DateTime?     @default(now()) @db.Timestamptz(6)
+  app_user_id String?       @db.Uuid
+  seq         Int?
+  app_user    app_user?     @relation(fields: [app_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  todo_latest todo_latest[]
+}
+
+model todo_history {
+  id          String        @id @db.Uuid
+  created     DateTime?     @default(now()) @db.Timestamptz(6)
+  title       String?       @db.VarChar(40)
+  description String?       @db.VarChar(2000)
+  deadline    DateTime?     @db.Timestamptz(6)
+  todo_latest todo_latest[]
+}
+
+model todo_history_tag {
+  id      String    @id @db.Uuid
+  created DateTime? @default(now()) @db.Timestamptz(6)
+  tag_id  String?   @db.Uuid
+  tag     tag?      @relation(fields: [tag_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model todo_latest {
+  id              String        @id @db.Uuid
+  created         DateTime?     @default(now()) @db.Timestamptz(6)
+  todo_id         String?       @db.Uuid
+  todo_history_id String?       @db.Uuid
+  todo_history    todo_history? @relation(fields: [todo_history_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  todo            todo?         @relation(fields: [todo_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
