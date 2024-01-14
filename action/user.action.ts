@@ -1,17 +1,9 @@
 import { createUserRepository } from '@/repository/UserRepository'
 import { createUserService } from '@/service/UserService'
+import { UserJSON } from '@clerk/nextjs/server'
 
 const userRepository = createUserRepository()
 const userService = createUserService(userRepository)
-
-export async function getUserById(userId: string) {
-    try {
-        const user = await userService.getUserById(userId)
-        return user
-    } catch (error) {
-        console.error({ error })
-    }
-}
 
 /**
  * Create a new user
@@ -22,14 +14,14 @@ export async function getUserById(userId: string) {
  * @param clerkid
  */
 export async function createUser({
-    name,
-    email,
-    clerkid
-}: {
-    name: string
-    email: string
-    clerkid: string
-}) {
+    id: clerkid,
+    email_addresses,
+    first_name,
+    last_name
+}: UserJSON) {
+    const name = !!first_name && !!last_name ? `${first_name} ${last_name}` : ''
+    const email = email_addresses[0].email_address
+
     try {
         const user = await userService.createUser({
             name,

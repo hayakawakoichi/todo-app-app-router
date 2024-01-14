@@ -60,23 +60,19 @@ export async function POST(req: Request) {
 
     // Handle the event
     if (eventType === 'user.created') {
-        const { id, email_addresses, first_name, last_name } = evt.data
-
-        const newUser = await createUser({
-            clerkid: id,
-            name: `${first_name} ${last_name}`,
-            email: email_addresses[0].email_address
-        })
-
-        if (newUser) {
-            await clerkClient.users.updateUserMetadata(id, {
-                publicMetadata: {
-                    userId: newUser.id
-                }
-            })
+        try {
+            const newUser = await createUser(evt.data)
+            if (newUser) {
+                await clerkClient.users.updateUserMetadata(evt.data.id, {
+                    publicMetadata: {
+                        userId: newUser.id
+                    }
+                })
+            }
+            return NextResponse.json({ message: 'OK', user: newUser })
+        } catch (error) {
+            return NextResponse.json({ message: 'Error', error })
         }
-
-        return NextResponse.json({ message: 'OK', user: newUser })
     }
 
     return new Response('', { status: 200 })
