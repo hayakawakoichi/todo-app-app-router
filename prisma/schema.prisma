@@ -1,0 +1,16 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model app_user {
+  id      String    @id @db.Uuid
+  created DateTime? @default(now()) @db.Timestamptz(6)
+  updated DateTime? @default(now()) @db.Timestamptz(6)
+  deleted DateTime? @db.Timestamptz(6)
+  name    String    @db.VarChar(40)
+}
