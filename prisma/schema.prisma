@@ -9,8 +9,10 @@ datasource db {
 
 model app_user {
   id      String    @id @db.Uuid
-  created DateTime? @default(now()) @db.Timestamptz(6)
-  updated DateTime? @default(now()) @db.Timestamptz(6)
+  created DateTime  @default(now()) @db.Timestamptz(6)
+  updated DateTime  @default(now()) @db.Timestamptz(6)
   deleted DateTime? @db.Timestamptz(6)
+  clerkid String    @unique @db.VarChar(40)
   name    String    @db.VarChar(40)
+  email   String    @unique @db.VarChar(255)
 }

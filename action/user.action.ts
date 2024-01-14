@@ -12,3 +12,32 @@ export async function getUserById(userId: string) {
         console.error({ error })
     }
 }
+
+/**
+ * Create a new user
+ * Clerk の Webhook でユーザーが作成されたときに呼び出される
+ *
+ * @param name
+ * @param email
+ * @param clerkid
+ */
+export async function createUser({
+    name,
+    email,
+    clerkid
+}: {
+    name: string
+    email: string
+    clerkid: string
+}) {
+    try {
+        const user = await userService.createUser({
+            name,
+            email,
+            clerkid
+        })
+        return user
+    } catch (error) {
+        console.error({ error })
+    }
+}

@@ -8,7 +8,9 @@ async function main() {
         update: {},
         create: {
             id: '0eb88855-5bf6-4a7f-b111-b46f5c3bd9c6',
-            name: 'John Doe'
+            name: 'John Doe',
+            email: 'JohnDoe@example.com',
+            clerkid: 'ck_1234567890'
         }
     })
     const JaneSmith = await prisma.app_user.upsert({
@@ -16,7 +18,9 @@ async function main() {
         update: {},
         create: {
             id: '71c2ada9-1868-46f2-af7b-14e35c88aab1',
-            name: 'Jane Smith'
+            name: 'Jane Smith',
+            email: 'JaneSmith@example.com',
+            clerkid: 'ck_1234567890_1'
         }
     })
 
