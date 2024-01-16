@@ -31,7 +31,6 @@ model todo {
   id          String        @id @db.Uuid
   created     DateTime?     @default(now()) @db.Timestamptz(6)
   app_user_id String?       @db.Uuid
-  seq         Int?
   app_user    app_user?     @relation(fields: [app_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   todo_latest todo_latest[]
 }
